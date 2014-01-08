@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,14 +25,14 @@ import android.widget.Toast;
 public class PantallaPrincipal extends Activity {
 
 	private Button BotonCalculo;
-	private Button radioTarifaNormal;
-	private Button radioTarifaUrgente;
+	private RadioButton radioTarifaNormal;
+	private RadioButton radioTarifaUrgente;
 	private CheckBox checkBoxRegalo;
 	private CheckBox checkBoxTarjeta;
 	static double tarifa;
 	private EditText Peso;
 	int precio;
-	String zona,continente;
+	String zona,continente,opciones,cadenaResultado,UrgenteNormal;
 	int kg;
 	
 	//Spinner destino
@@ -100,8 +101,8 @@ public class PantallaPrincipal extends Activity {
         
 		
 		BotonCalculo = (Button)findViewById(R.id.BotonCalculo);
-		radioTarifaNormal = (Button)findViewById(R.id.radio1);
-		radioTarifaUrgente = (Button)findViewById(R.id.radio2);
+		radioTarifaNormal = (RadioButton)findViewById(R.id.radio1);
+		radioTarifaUrgente = (RadioButton)findViewById(R.id.radio2);
 		checkBoxRegalo = (CheckBox)findViewById(R.id.ChkRegalo);
 		checkBoxTarjeta = (CheckBox)findViewById(R.id.ChkTarjeta);
 		
@@ -125,7 +126,7 @@ public class PantallaPrincipal extends Activity {
 				String peso = Peso.getText().toString();
 				kg = Integer.parseInt(peso);
 				
-				
+				//Calculos de la tarifa
 				if (kg <= 5){
 					tarifa = precio +(kg * 1);
 				}else{
@@ -137,6 +138,40 @@ public class PantallaPrincipal extends Activity {
 						}
 					}
 				}
+				//Comprobaciones de los checkbox
+				if (checkBoxRegalo.isChecked() && !(checkBoxTarjeta.isChecked())){
+					opciones = "Con caja regalo";
+				}else{
+					if (checkBoxTarjeta.isChecked() && !(checkBoxRegalo.isChecked())){
+						opciones = "Con tarjeta dedicatoria";
+					}else{
+						if (checkBoxRegalo.isChecked() && checkBoxTarjeta.isChecked()){
+								opciones = "Con caja regalo y dedicatoria";
+						}else{
+							opciones = "";
+						}
+					}
+				}
+				//Comprobamos los radiobutton para ver si es urgente o tarifa normal
+				if (radioTarifaUrgente.isChecked()){
+					tarifa = tarifa + (tarifa * 0.3);
+					UrgenteNormal = "urgente";
+				}else{
+					UrgenteNormal = "normal";
+					
+				}
+				//Asignamos a una variable la CADENA para pasarla a otra pantalla
+				cadenaResultado = ("Zona:" +zona + " -" +continente+ "-" + "\nTarifa: " + UrgenteNormal + "\nPeso: " + peso +
+					" Kg" + "\nOpciones: " + opciones + "\nCoste Final: " +tarifa + " €"	);
+					
+				
+				Bundle bund = new Bundle();
+				
+				bund.putString("Tarifa", cadenaResultado);
+				Intent pantalla = new Intent(PantallaPrincipal.this,PantallaResult.class);
+				pantalla.putExtras(bund);
+				
+				startActivity(pantalla);
 				
 				
 			}
