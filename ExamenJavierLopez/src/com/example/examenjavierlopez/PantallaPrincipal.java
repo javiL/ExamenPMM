@@ -3,6 +3,7 @@ package com.example.examenjavierlopez;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -107,6 +108,7 @@ public class PantallaPrincipal extends Activity {
 		findViewById(R.id.gruporb);
 		Peso = (EditText)findViewById(R.id.EditText);
 		
+		//Al clickar sobre el editText, este se borra
 		Peso.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
@@ -155,7 +157,8 @@ public class PantallaPrincipal extends Activity {
 		
 		switch(itemId) {
 		case R.id.MenuOpcDibujo:
-			//TODO
+			Intent intentCanvas = new Intent(this,Dibujito.class);
+			startActivity(intentCanvas);
 			break;
 		case R.id.MenuOpcAcercaDe:
 			Toast.makeText(this, "Desarrollado por Javier Lopez de 2ºDAM", Toast.LENGTH_SHORT).show();
