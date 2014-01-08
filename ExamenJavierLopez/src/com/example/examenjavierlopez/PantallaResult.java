@@ -12,5 +12,12 @@ public class PantallaResult extends Activity{
 		setContentView(R.layout.pantallaresultado);
 		
 		TextView tarifa = (TextView)findViewById(R.id.TxtTarifa);
+		
+		Bundle bund = this.getIntent().getExtras();
+		
+		tarifa.setText(bund.getString("Tarifa"));
+		
 	}
+	
+	
 }
